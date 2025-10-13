@@ -12,8 +12,14 @@ class Post extends Model
     use HasFactory;
 
     protected function snippet(): Attribute {
-        return Attribute::get(function (){
+        return Attribute::get(function () {
             return explode("\n\n", $this->body)[0];
+        });
+    }
+
+    protected function displayBody(): Attribute {
+        return Attribute::get(function () {
+            return nl2br(htmlspecialchars($this->body));
         });
     }
 }
