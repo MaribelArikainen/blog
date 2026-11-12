@@ -11,7 +11,8 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // @todo make this secure later
+        return true;
     }
 
     /**
@@ -22,7 +23,8 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required',
+            'body' => 'nullable',
         ];
     }
 }
