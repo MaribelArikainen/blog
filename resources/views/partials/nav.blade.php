@@ -37,7 +37,24 @@
       <li><a>Item 3</a></li>
     </ul>
   </div>
-  <div class="navbar-end">
-    <a class="btn">Button</a>
+  <div class="navbar-end gap-2">
+    @auth
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn m-1">{{ auth()->user()->name }}</div>
+        <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <li><a href="{{ route('dashboard') }}">@lang('Dashboard')</a></li>
+          <li><a href="{{ route('profile.edit') }}">@lang('Profile')</a></li>
+          <li>
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button>@lang('Log Out')</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    @else
+      <a href="{{ route('register') }}" class="btn btn-primary">@lang('Register')</a>
+      <a href="{{ route('login') }}" class="btn btn-secondary">@lang('Login')</a>
+    @endauth
   </div>
 </div>
