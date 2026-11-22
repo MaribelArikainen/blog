@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -13,7 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(16);
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $posts = $user->posts()->latest()->paginate(16);
         return view('posts.index', compact('posts'));
     }
 
@@ -31,6 +34,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $post = new Post($request->validated());
+        $post->user()->associate(Auth::user());
         $post->save();
         return redirect()->route('posts.index');
     }

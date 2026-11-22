@@ -9,9 +9,10 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/page1', [PublicController::class, 'page1'])->name('page1');
 Route::get('/page2', [PublicController::class, 'page2'])->name('page2');
 Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
+Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::get('/secure', [PublicController::class, 'index'])->name('secure')->middleware(['auth', 'password.confirm']);
 
-Route::resource('/admin/posts', PostController::class);
+Route::resource('/admin/posts', PostController::class)->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

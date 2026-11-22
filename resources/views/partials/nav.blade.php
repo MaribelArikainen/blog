@@ -9,13 +9,15 @@
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         <li><a href="{{ route('page1') }}">Page 1</a></li>
         <li><a href="{{ route('page2') }}">Page 2</a></li>
-        <li>
-          <a>Admin</a>
-          <ul class="p-2">
-            <li><a href="{{ route('posts.index') }}">Posts</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </li>
+        @auth
+          <li>
+            <a>Admin</a>
+            <ul class="p-2">
+              <li><a href="{{ route('posts.index') }}">Posts</a></li>
+              <li><a>Submenu 2</a></li>
+            </ul>
+          </li>
+        @endauth
         <li><a>Item 3</a></li>
       </ul>
     </div>
@@ -25,15 +27,17 @@
     <ul class="menu menu-horizontal px-1">
       <li><a href="{{ route('page1') }}">Page 1</a></li>
       <li><a href="{{ route('page2') }}">Page 2</a></li>
-      <li>
-        <details>
-          <summary>Admin</summary>
-          <ul class="p-2 bg-base-100 w-40 z-1">
-            <li><a href="{{ route('posts.index') }}">Posts</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </details>
-      </li>
+      @auth
+        <li>
+          <details>
+            <summary>Admin</summary>
+            <ul class="p-2 bg-base-100 w-40 z-1">
+              <li><a href="{{ route('posts.index') }}">Posts</a></li>
+              <li><a>Submenu 2</a></li>
+            </ul>
+          </details>
+        </li>
+      @endauth
       <li><a>Item 3</a></li>
     </ul>
   </div>
@@ -43,11 +47,12 @@
         <div tabindex="0" role="button" class="btn m-1">{{ auth()->user()->name }}</div>
         <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
           <li><a href="{{ route('dashboard') }}">@lang('Dashboard')</a></li>
+          <li><a href="{{ route('user', auth()->user()) }}">@lang('My posts')</a></li>
           <li><a href="{{ route('profile.edit') }}">@lang('Profile')</a></li>
           <li>
             <form method="POST" action="{{ route('logout') }}">
               @csrf
-              <button>@lang('Log Out')</button>
+              <button class="w-full text-left">@lang('Log Out')</button>
             </form>
           </li>
         </ul>
