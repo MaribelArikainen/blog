@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $tags = Tag::all();
+        return view('posts.create', compact('tags'));
     }
 
     /**
@@ -36,6 +38,7 @@ class PostController extends Controller
         $post = new Post($request->validated());
         $post->user()->associate(Auth::user());
         $post->save();
+        $post->tags()->attach($request->validated('tags') ?? []);
         return redirect()->route('posts.index');
     }
 
@@ -52,7 +55,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
+        $tags = Tag::all();
+        return view('posts.edit', compact('post', 'tags'));
     }
 
     /**
@@ -61,6 +65,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->validated());
+        $post->tags()->sync($request->validated('tags') ?? []);
         return redirect()->route('posts.index');
     }
 

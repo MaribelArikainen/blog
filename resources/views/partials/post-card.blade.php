@@ -13,6 +13,11 @@
             <a href="{{ route('user', $post->user) }}" class="link link-hover">{{ $post->user->name }}</a>
         </span>
         <span class="text-base-content/70">{{ $post->created_at->diffForHumans() }}</span>
+        <div class="flex flex-wrap gap-1">
+            @foreach ($post->tags as $tag)
+                <div class="badge badge-outline badge-primary">{{ $tag->name }}</div>
+            @endforeach
+        </div>
         <div class="card-actions justify-end">
             @isset($posts)
                 <a href="{{ route('post', $post) }}" class="btn btn-primary">@lang('Read more')</a>

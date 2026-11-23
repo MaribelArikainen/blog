@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
@@ -13,6 +14,7 @@ Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::get('/secure', [PublicController::class, 'index'])->name('secure')->middleware(['auth', 'password.confirm']);
 
 Route::resource('/admin/posts', PostController::class)->middleware('auth');
+Route::resource('/admin/tags', TagController::class)->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

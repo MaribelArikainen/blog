@@ -25,6 +25,8 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required',
             'body' => 'nullable',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ];
     }
 }
