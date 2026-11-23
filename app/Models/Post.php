@@ -12,6 +12,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'body'];
+    protected $appends = ['snippet'];
 
     protected function snippet(): Attribute {
         return Attribute::get(function () {

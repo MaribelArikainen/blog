@@ -14,6 +14,9 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::withCount('posts')->latest()->paginate(16);
+        if(request()->wantsJson()) {
+            return $tags;
+        }
         return view('tags.index', compact('tags'));
     }
 
@@ -32,6 +35,9 @@ class TagController extends Controller
     {
         $tag = new Tag($request->validated());
         $tag->save();
+        if($request->wantsJson()) {
+            return $tag;
+        }
         return redirect()->route('tags.index');
     }
 
@@ -40,6 +46,9 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
+        if(request()->wantsJson()) {
+            return $tag->loadCount('posts');
+        }
         return view('tags.show', compact('tag'));
     }
 
@@ -57,6 +66,9 @@ class TagController extends Controller
     public function update(UpdateTagRequest $request, Tag $tag)
     {
         $tag->update($request->validated());
+        if($request->wantsJson()) {
+            return $tag;
+        }
         return redirect()->route('tags.index');
     }
 
@@ -66,6 +78,9 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
+        if(request()->wantsJson()) {
+            return $tag;
+        }
         return redirect()->route('tags.index');
     }
 }

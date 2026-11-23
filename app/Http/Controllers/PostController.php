@@ -18,6 +18,9 @@ class PostController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $posts = $user->posts()->latest()->paginate(16);
+        if(request()->wantsJson()) {
+            return $posts;
+        }
         return view('posts.index', compact('posts'));
     }
 
@@ -39,6 +42,9 @@ class PostController extends Controller
         $post->user()->associate(Auth::user());
         $post->save();
         $post->tags()->attach($request->validated('tags') ?? []);
+        if($request->wantsJson()) {
+            return $post;
+        }
         return redirect()->route('posts.index');
     }
 
@@ -47,6 +53,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if(request()->wantsJson()) {
+            return $post->load('tags');
+        }
         return view('posts.show', compact('post'));
     }
 
@@ -65,7 +74,12 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->validated());
-        $post->tags()->sync($request->validated('tags') ?? []);
+        if(!$request->wantsJson() || $request->has('tags')) {
+            $post->tags()->sync($request->validated('tags') ?? []);
+        }
+        if($request->wantsJson()) {
+            return $post;
+        }
         return redirect()->route('posts.index');
     }
 
@@ -75,6 +89,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        if(request()->wantsJson()) {
+            return $post;
+        }
         return redirect()->route('posts.index');
     }
 }
